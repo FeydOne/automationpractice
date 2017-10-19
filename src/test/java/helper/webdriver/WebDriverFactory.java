@@ -2,14 +2,16 @@ package helper.webdriver;
 
 import com.xceptance.xlt.api.util.XltLogger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
-/**
- * Created by dburtescu on 10/17/2017.
- */
 public class WebDriverFactory {
     private static final int IMPLICIT_TIMEOUT = 40;
     private static final int PAGELOAD_TIMEOUT = 60;
@@ -28,18 +30,43 @@ public class WebDriverFactory {
         });
     }
 
-   /* public static WebDriver WebDriverFactory() {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
+    public static WebDriver WebDriverFactory() {
+
         String browser = System.getProperty("browser").toLowerCase();
 
         XltLogger.runTimeLogger.debug("Initializing Webdriver");
 
         switch (browser) {
             case "chrome":
-                Path currentRelativePath = Paths.get("");
-                String file = currentRelativePath.toAbsolutePath() + "/src/test/resources/browsers";
-                System.setProperty("webdriver.chrome.driver", "");
+                ChromeOptions options = new ChromeOptions();
+                configureDriver("webdriver.chrome.driver", "chromedriver");
+                driver = new ChromeDriver(options);
+                XltLogger.runTimeLogger.debug("Chrome Driver is selected\n");
+                break;
+            case "firefox":
+                configureDriver("webdriver.gecko.driver", "geckodriver");
+                FirefoxOptions firefoxOptions = new FirefoxOptions()
+                        .setProfile(new FirefoxProfile());
+                firefoxOptions.setCapability("marionette", false);
+                driver = new FirefoxDriver();
+                XltLogger.runTimeLogger.debug("Firefox Driver is selected\n");
+                break;
         }
-    }*/
 
+        driver.manage().deleteAllCookies();
+        driver.manage().timeouts().implicitlyWait(IMPLICIT_TIMEOUT, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(PAGELOAD_TIMEOUT, TimeUnit.SECONDS);
+
+        driver.switchTo().window(driver.getWindowHandle());
+        return driver;
+    }
+
+    private static void configureDriver(String property, String driverServiceName) {
+        Path currentRelativePath = Paths.get("");
+        System.setProperty(property, String.valueOf(currentRelativePath) + "src/test/resources/browsers/" + driverServiceName + ".exe");
+    }
+
+    public static WebDriver getDriver() {
+        return driver;
+    }
 }

@@ -1,13 +1,19 @@
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import extendable.ScenarioOverrides;
+import org.junit.Test;
 
 /**
  * Created by dburtescu on 10/17/2017.
  */
-public class test {
+public class test extends ScenarioOverrides {
 
-    public static void main(String[] args) {
-        Path currentRelativePath = Paths.get("");
-        System.out.println(currentRelativePath.toAbsolutePath());
+    @Test
+    public void testMethod() {
+        String browser = System.getProperty("browser");
+        System.out.println(browser);
+        open("https://www.google.ro");
+        type("css=.gsfi", "Manchester City");
+        clickAndWait("name=btnK");
+
+        assertTextPresent("Manchester City");
     }
 }

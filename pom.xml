@@ -10,7 +10,7 @@
     <name>Magento Shop</name>
 
     <properties>
-        <default.browser>chrome</default.browser>
+        <default.browser>firefox</default.browser>
         <java.version>1.8</java.version>
     </properties>
 
@@ -47,6 +47,11 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20.1</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <browser>${default.browser}</browser>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
