@@ -10,7 +10,7 @@
     <name>Magento Shop</name>
 
     <properties>
-        <default.browser>firefox</default.browser>
+        <default.browser>edge</default.browser>
         <java.version>1.8</java.version>
     </properties>
 

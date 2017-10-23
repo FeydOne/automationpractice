@@ -4,6 +4,8 @@ import com.xceptance.xlt.api.util.XltLogger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -51,6 +53,12 @@ public class WebDriverFactory {
                 driver = new FirefoxDriver();
                 XltLogger.runTimeLogger.debug("Firefox Driver is selected\n");
                 break;
+            case "edge":
+                configureDriver("webdriver.edge.driver", "MicrosoftWebDriver");
+                EdgeOptions edgeOptions = new EdgeOptions();
+                driver = new EdgeDriver(edgeOptions);
+                XltLogger.runTimeLogger.debug("Edge Driver is selected\n");
+
         }
 
         driver.manage().deleteAllCookies();
